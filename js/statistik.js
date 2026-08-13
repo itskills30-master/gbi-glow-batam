@@ -387,18 +387,12 @@ function renderPieUmur(){
                 datasets:[{
 
                     data:[
-
-                        statistik.balita,
-
-                        statistik.anak,
-
-                        statistik.remaja,
-
-                        statistik.dewasa,
-
-                        statistik.lansia
-
-                    ],
+                                statistik.umur?.balita || 0,
+                                statistik.umur?.anak || 0,
+                                statistik.umur?.remaja || 0,
+                                statistik.umur?.dewasa || 0,
+                                statistik.umur?.lansia || 0
+                            ],
 
                     backgroundColor:[
 
