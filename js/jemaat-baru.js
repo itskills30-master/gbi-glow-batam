@@ -579,158 +579,553 @@ DETAIL JEMAAT
 
 function showDetail(item){
 
-    const detailContent = document.getElementById("detailContent");
+    const detailContent =
+        document.getElementById("detailContent");
 
-    const foto = getDriveImage(item["Pas Foto"] || "");
+    /*================================================
+    FOTO
+    =================================================*/
+
+    const foto =
+        getDriveImage(item["Pas Foto"] || "");
+
     console.log("Pas Foto :", item["Pas Foto"]);
     console.log("Foto URL :", foto);
 
-const fotoHtml = foto
-                    ? `
-                    <img
-                        src="${foto}"
-                        class="detail-avatar"
-                        style="cursor:pointer"
-                        onclick="previewFoto('${foto}')"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    const fotoHtml = foto
+        ? `
+            <img
+                src="${foto}"
+                class="detail-avatar"
+                style="cursor:pointer"
+                onclick="previewFoto('${foto}')"
+                onerror="
+                    this.style.display='none';
+                    this.nextElementSibling.style.display='flex';
+                ">
 
-                    <div class="detail-avatar-default" style="display:none;">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    `
-                    :
-                    `
-                    <div class="detail-avatar-default">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    `;
+            <div
+                class="detail-avatar-default"
+                style="display:none;">
 
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+          `
+        : `
+            <div class="detail-avatar-default">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+          `;
+
+
+    /*================================================
+    PASANGAN
+    HANYA TAMPIL JIKA NAMA PASANGAN ADA
+    =================================================*/
+
+    let pasanganHtml = "";
+
+    if(
+        String(item["Nama Istri/Suami"] || "").trim()
+    ){
+
+        pasanganHtml = `
+
+            <div class="card shadow-sm mb-3">
+
+                <div class="card-body">
+
+                    <h6 class="fw-bold text-primary mb-3">
+
+                        <i class="fa-solid fa-heart me-2"></i>
+
+                        Data Pasangan
+
+                    </h6>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped mb-0">
+
+                            <tr>
+
+                                <th width="40%">
+                                    Nama
+                                </th>
+
+                                <td>
+                                    ${item["Nama Istri/Suami"] || "-"}
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+                                    Status Pasangan
+                                </th>
+
+                                <td>
+                                    ${item["Status Pasangan"] || "-"}
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+                                    Tempat Lahir
+                                </th>
+
+                                <td>
+                                    ${item["Tempat Lahir Pasangan"] || "-"}
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+                                    Tanggal Lahir
+                                </th>
+
+                                <td>
+                                    ${item["Tanggal Lahir Pasangan"] || "-"}
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*================================================
+    ANAK
+    SETIAP ANAK HANYA TAMPIL JIKA NAMANYA ADA
+    =================================================*/
+
+    const daftarAnak = [
+
+        {
+            nomor: 1,
+            nama: item["Nama anak pertama"],
+            jenisKelamin: item["Jenis Kelamin anak pertama"],
+            tempatLahir: item["Tempat Lahir anak pertama"],
+            tanggalLahir: item["Tanggal lahir anak pertama"]
+        },
+
+        {
+            nomor: 2,
+            nama: item["Nama anak kedua"],
+            jenisKelamin: item["Jenis Kelamin anak kedua"],
+            tempatLahir: item["Tempat Lahir anak kedua"],
+            tanggalLahir: item["Tanggal lahir anak kedua"]
+        },
+
+        {
+            nomor: 3,
+            nama: item["Nama anak ketiga"],
+            jenisKelamin: item["Jenis Kelamin anak ketiga"],
+            tempatLahir: item["Tempat Lahir anak ketiga"],
+            tanggalLahir: item["Tanggal lahir anak ketiga"]
+        }
+
+    ];
+
+
+    let anakHtml = "";
+
+
+    daftarAnak.forEach(anak => {
+
+        /*============================================
+        JIKA NAMA ANAK KOSONG
+        MAKA SELURUH BLOK DISEMBUNYIKAN
+        ============================================*/
+
+        if(
+            !String(anak.nama || "").trim()
+        ){
+
+            return;
+
+        }
+
+
+        anakHtml += `
+
+            <div class="card shadow-sm mb-3">
+
+                <div class="card-body">
+
+                    <h6 class="fw-bold text-primary mb-3">
+
+                        <i class="fa-solid fa-child me-2"></i>
+
+                        Anak ${anak.nomor}
+
+                    </h6>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped mb-0">
+
+                            <tr>
+
+                                <th width="40%">
+                                    Nama
+                                </th>
+
+                                <td>
+                                    ${anak.nama || "-"}
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+                                    Jenis Kelamin
+                                </th>
+
+                                <td>
+                                    ${anak.jenisKelamin || "-"}
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+                                    Tempat Lahir
+                                </th>
+
+                                <td>
+                                    ${anak.tempatLahir || "-"}
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+                                    Tanggal Lahir
+                                </th>
+
+                                <td>
+                                    ${anak.tanggalLahir || "-"}
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    /*================================================
+    DETAIL UTAMA
+    =================================================*/
 
     detailContent.innerHTML = `
 
         <div class="text-center mb-4">
 
-    ${fotoHtml}
+            ${fotoHtml}
 
-    <h4 class="mt-3 fw-bold">
+            <h4 class="mt-3 fw-bold">
 
-        ${item["Nama Lengkap"] || "-"}
+                ${item["Nama Lengkap"] || "-"}
 
-    </h4>
+            </h4>
 
-</div>
+        </div>
 
-<table class="table table-striped">
 
-            <tr>
-                <th width="40%">Nama Lengkap</th>
-                <td>${item["Nama Lengkap"] || "-"}</td>
-            </tr>
+        <!-- =========================================
+        DATA JEMAAT
+        ========================================== -->
 
-            <tr>
-                <th width="40%">Bergabung Sejak</th>
-                <td>${formatTanggal(item["Timestamp"]) || "-"}</td>
-            </tr>
+        <div class="card shadow-sm mb-3">
 
-            <tr>
-                <th>Jenis Kelamin</th>
-                <td>${item["Jenis Kelamin"] || "-"}</td>
-            </tr>
+            <div class="card-body">
 
-            <tr>
-                <th>Tempat Lahir</th>
-                <td>${item["Tempat Lahir"] || "-"}</td>
-            </tr>
+                <h6 class="fw-bold text-primary mb-3">
 
-            <tr>
-                <th>Tanggal Lahir</th>
-                <td>${item["Tanggal Lahir"] || "-"}</td>
-            </tr>
+                    <i class="fa-solid fa-user me-2"></i>
 
-            <tr>
-                <th>Nomor Telepon</th>
-                <td>${item["Nomor Telepon"] || "-"}</td>
-            </tr>
+                    Data Jemaat
 
-            <tr>
-                <th>Email</th>
-                <td>${item["Email Address"] || "-"}</td>
-            </tr>
+                </h6>
 
-            <tr>
-                <th>Alamat</th>
-                <td>${item["Alamat Lengkap"] || "-"}</td>
-            </tr>
+                <div class="table-responsive">
 
-            <tr>
-                <th>Pekerjaan</th>
-                <td>${item["Pekerjaan"] || "-"}</td>
-            </tr>
+                    <table class="table table-striped mb-0">
 
-            <tr>
-                <th>Status Baptis</th>
-                <td>${item["Apakah Sudah Baptis Selam"] || "-"}</td>
-            </tr>
+                        <tr>
 
-            <tr>
-                <th>Status Pernikahan</th>
-                <td>${item["Status Pernikahan"] || "-"}</td>
-            </tr>
+                            <th width="40%">
+                                Nama Lengkap
+                            </th>
 
-            <tr>
-                <th>Nama Pasangan</th>
+                            <td>
+                                ${item["Nama Lengkap"] || "-"}
+                            </td>
 
-                <td>${item["Nama Istri/Suami"] || "-"}</td>
-            </tr>
+                        </tr>
 
-            <tr>
-                <th>Nama Anak</th>
-                <td>${item["Nama anak"] || "-"}</td>
-            </tr>
+                        <tr>
 
-            <tr>
-                <th>Status di GBI</th>
-                <td>${item["Status di GBI Altar Tabernakel Batam"] || "-"}</td>
-            </tr>
+                            <th>
+                                Bergabung Sejak
+                            </th>
 
-            <tr>
-                <th>KOMSEL / SDK</th>
-                <td>${item["Apakah sudah terdaftar di salah satu Ibadah KOMSEL atau SDK (Surga Dalam Keluarga)?"] || "-"}</td>
-            </tr>
+                            <td>
+                                ${formatTanggal(
+                                    item["Timestamp"]
+                                ) || "-"}
+                            </td>
 
-        </table>
+                        </tr>
 
-<div class="mt-4 d-grid gap-2">
+                        <tr>
 
-    <a
-        href="https://wa.me/${formatWhatsapp(item["Nomor Telepon"] || "")}"
-        target="_blank"
-        class="btn btn-success">
+                            <th>
+                                Jenis Kelamin
+                            </th>
 
-        <i class="fa-brands fa-whatsapp me-2"></i>
+                            <td>
+                                ${item["Jenis Kelamin"] || "-"}
+                            </td>
 
-        Chat WhatsApp
+                        </tr>
 
-    </a>
+                        <tr>
 
-    <a
-        href="https://wa.me/${formatWhatsapp(item["Nomor Telepon"] || "")}"
-        target="_blank"
-        class="btn btn-outline-success">
+                            <th>
+                                Tempat Lahir
+                            </th>
 
-        <i class="fa-solid fa-phone me-2"></i>
+                            <td>
+                                ${item["Tempat Lahir"] || "-"}
+                            </td>
 
-        Telepon via WhatsApp
+                        </tr>
 
-    </a>
+                        <tr>
 
-</div>
+                            <th>
+                                Tanggal Lahir
+                            </th>
 
-`;
+                            <td>
+                                ${item["Tanggal Lahir"] || "-"}
+                            </td>
 
-    const canvas = new bootstrap.Offcanvas(
-        document.getElementById("detailCanvas")
-    );
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Nomor Telepon
+                            </th>
+
+                            <td>
+                                ${item["Nomor Telepon"] || "-"}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <td>
+                                ${item["Email Address"] || "-"}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Alamat
+                            </th>
+
+                            <td>
+                                ${item["Alamat Lengkap"] || "-"}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Pekerjaan
+                            </th>
+
+                            <td>
+                                ${item["Pekerjaan"] || "-"}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Status Baptis
+                            </th>
+
+                            <td>
+                                ${item["Apakah Sudah Baptis Selam"] || "-"}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Status Pernikahan
+                            </th>
+
+                            <td>
+                                ${item["Status Pernikahan"] || "-"}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Status di GBI
+                            </th>
+
+                            <td>
+                                ${item[
+                                    "Status di GBI Altar Tabernakel Batam"
+                                ] || "-"}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Bergabung Dari Tahun
+                            </th>
+
+                            <td>
+                                ${item["Bergabung dari Tahun"] || "-"}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                KOMSEL / SDK
+                            </th>
+
+                            <td>
+                                ${item[
+                                    "Apakah sudah terdaftar di salah satu Ibadah KOMSEL atau SDK (Surga Dalam Keluarga)?"
+                                ] || "-"}
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+        DATA PASANGAN
+        HIDDEN JIKA TIDAK ADA
+        ========================================== -->
+
+        ${pasanganHtml}
+
+
+        <!-- =========================================
+        DATA ANAK
+        SETIAP BLOK HIDDEN JIKA TIDAK ADA NAMA
+        ========================================== -->
+
+        ${anakHtml}
+
+
+        <!-- =========================================
+        KONTAK
+        ========================================== -->
+
+        <div class="mt-4 d-grid gap-2">
+
+            <a
+                href="https://wa.me/${formatWhatsapp(
+                    item["Nomor Telepon"] || ""
+                )}"
+                target="_blank"
+                class="btn btn-success">
+
+                <i class="fa-brands fa-whatsapp me-2"></i>
+
+                Chat WhatsApp
+
+            </a>
+
+            <a
+                href="https://wa.me/${formatWhatsapp(
+                    item["Nomor Telepon"] || ""
+                )}"
+                target="_blank"
+                class="btn btn-outline-success">
+
+                <i class="fa-solid fa-phone me-2"></i>
+
+                Telepon via WhatsApp
+
+            </a>
+
+        </div>
+
+    `;
+
+
+    /*================================================
+    BUKA OFFCANVAS
+    =================================================*/
+
+    const canvas =
+        new bootstrap.Offcanvas(
+            document.getElementById("detailCanvas")
+        );
 
     canvas.show();
 
