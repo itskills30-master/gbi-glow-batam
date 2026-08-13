@@ -8,7 +8,7 @@ STATISTIK
 API: AMBIL DARI Statistik.gs
 ====================================================*/
 const GAS_URL =
-"https://script.google.com/macros/s/AKfycbwoLiYK7nzn7eQRlTJ2FTdaHE3fm0WXAPKraVsNmD9alyv-c5QH2Fssl7VQcYQssgN-FA/exec";
+"https://script.google.com/macros/s/AKfycbxMJq2uCbFgZ6vR6BMNXlngAh9Ma8FmnDVBb41YgZk4k8IBHLoEM4D-IlEEH4G8itUSJg/exec";
 
 
 /*====================================================
